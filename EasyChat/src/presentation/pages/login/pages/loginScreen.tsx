@@ -7,16 +7,19 @@ import {
     TouchableOpacity, 
     View 
 } from "react-native";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StackParamList } from "../../../navigation/stackParamList";
+import Spacer from "../../../widgets/spacer/spacer";
 
 const IMG = {uri: 'https://media.discordapp.net/attachments/1135676720142356492/1164326265583570944/emmanuel99._a_person_reading_a_message_on_the_phone_and_smiling_d41f07ee-eaba-4a4b-a82e-ada22efc7989.png?ex=6542ce55&is=65305955&hm=9097efb119c30b3af9d7b61b9770b1f895b87597f0b3b81f17c4743efc388255&=&width=466&height=831'};
 
-const Spacer = ({hspace = 1}) => {
-    return(
-        <View style={{height: hspace}} ></View>
-    )
+type navigationType = StackNavigationProp<StackParamList,'LoginScreen'>;
+
+type props = {
+    navigation: navigationType
 }
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: props) => {
     return(
         <View style={styles.container}>
             <ImageBackground source={IMG} resizeMode="cover" style={styles.image}>
@@ -30,7 +33,7 @@ const LoginScreen = () => {
                             placeholderTextColor='#828282' 
                         />
                         <Spacer hspace={30} />
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')} >
                             <View style={styles.btnFill} >
                                 <Text style={styles.txtbtnW} >Iniciar sesion</Text>
                             </View>
