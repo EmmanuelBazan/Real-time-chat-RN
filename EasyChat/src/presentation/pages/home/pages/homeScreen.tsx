@@ -1,8 +1,10 @@
-import { View } from "react-native/types"
+import { Text, View } from "react-native"
 
 const HomeScreen = () => {
     return(
-        <View></View>
+        <View>
+            <Text>HomeScreen</Text>
+        </View>
     )
 }
 

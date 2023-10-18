@@ -1,8 +1,10 @@
-import { View } from "react-native/types"
+import { Text, View } from "react-native"
 
 const MessageScreen = () => {
     return(
-        <View></View>
+        <View>
+            <Text>MessageScreen</Text>
+        </View>
     )
 }
 
