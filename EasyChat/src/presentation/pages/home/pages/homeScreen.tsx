@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { socket } from "../../../../utils";
 import Spacer from "../../../widgets/spacer/spacer";
 
 const HomeScreen = () => {
@@ -38,7 +39,10 @@ const HomeScreen = () => {
                             placeholderTextColor='#828282' 
                         />
                         <Spacer hspace={30} />
-                        <TouchableOpacity onPress={() => {}} >
+                        <TouchableOpacity onPress={() => {
+                            console.log('try to connect...');
+                            socket.emit('createNewGroup','groupName')
+                        }} >
                             <View style={styles.btnFill} >
                                 <Text style={styles.txtbtnW} >Agregar</Text>
                             </View>
