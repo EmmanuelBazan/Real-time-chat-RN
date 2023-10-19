@@ -1,7 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import React, { useState } from "react";
+import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import Spacer from "../../../widgets/spacer/spacer";
 
 const HomeScreen = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    
     return(
         <View style={styles.globalContainer} >
             <Spacer hspace={30}/>
@@ -10,13 +13,46 @@ const HomeScreen = () => {
             </View>
             <View style={styles.body} >
                 <View style={styles.btncontainer} >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <View style={styles.btn} >
-                            <Text style={styles.txtbtn} >+</Text>
+                            <Text style={styles.txtbtnW} >+</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.txtNormal} >Agregar nuevo grupo</Text>
+                        <TextInput
+                            style={{width: '100%', fontSize: 14, color: '#000000', fontFamily: 'BrandonGrotesque-Regular', height: 50, borderBottomColor: '#053e99', borderBottomWidth: 2}} 
+                            placeholder={'Ingresa un nombre'} 
+                            placeholderTextColor='#828282' 
+                        />
+                        <Spacer hspace={30} />
+                        <TouchableOpacity onPress={() => {}} >
+                            <View style={styles.btnFill} >
+                                <Text style={styles.txtbtnW} >Agregar</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <Spacer hspace={10} />
+                        <TouchableOpacity onPress={() => setModalVisible(false)} >
+                            <View style={styles.btnEmpty} >
+                                <Text style={styles.txtbtn} >cancelar</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
         </View>
     )
 }
@@ -65,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     txtbtn: {
-        color: '#f5f5f5',
+        color: 'red',
         fontSize: 16,
         fontWeight: '700',
     },
@@ -77,5 +113,51 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         position: 'absolute',
         bottom: 50
-    }
+    },
+    txtNormal: {
+        color: '#080808',
+        fontWeight: '500',
+        fontSize: 14
+    },
+    txtbtnW: {
+        color: '#f5f5f5',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    btnFill: {
+        display: 'flex',
+        flexDirection: 'column',
+        paddingHorizontal: '35%',
+        height: 40,
+        backgroundColor: '#053e99',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    btnEmpty: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+        backgroundColor: '#000000b0'
+    },
+    modalView: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '90%',
+        backgroundColor: '#f5f5f5f5',
+        borderRadius: 20,
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+    },
 });
