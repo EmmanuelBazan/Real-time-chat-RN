@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { socket } from "../../../../utils";
+import socketService from "../../../../utils";
 import Spacer from "../../../widgets/spacer/spacer";
 
 const HomeScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
+        socketService.initializeSocket();
+
+        socketService.emit('getAllGroups');
+        
+        socketService.on('groupList', (groups: any) => {
+            console.log(groups);
+        })
+    },[socketService]);
+
+    const sendMessage = () => {
+        socketService.emit('create_group','nombre del grupo');
+    }
     
     return(
         <View style={styles.globalContainer} >
@@ -29,7 +43,7 @@ const HomeScreen = () => {
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
                     setModalVisible(!modalVisible);
-                }}>
+            }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.txtNormal} >Agregar nuevo grupo</Text>
@@ -41,7 +55,7 @@ const HomeScreen = () => {
                         <Spacer hspace={30} />
                         <TouchableOpacity onPress={() => {
                             console.log('try to connect...');
-                            socket.emit('createNewGroup','groupName')
+                            sendMessage();
                         }} >
                             <View style={styles.btnFill} >
                                 <Text style={styles.txtbtnW} >Agregar</Text>

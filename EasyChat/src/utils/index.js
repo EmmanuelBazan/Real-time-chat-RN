@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 // export const socket = io("http://localhost:4000");
 
-const SOCKET_URL = 'http://localhost:4000';
+const SOCKET_URL = 'https://568b-2806-2f0-7421-fc90-d50-8912-3333-c148.ngrok-free.app';
 
 class WSService {
     initializeSocket = async() => {
@@ -31,4 +31,20 @@ class WSService {
             console.log('socket is not initialized',error);
         }
     }
+
+    emit(event, data = {}) {
+        this.socket.emit(event,data)
+    }
+
+    on(event, db) {
+        this.socket.on(event, db)
+    }
+
+    removeListener(listenerName) {
+        this.socket.removeListener(listenerName)
+    }
 }
+
+const socketService = new WSService();
+
+export default socketService;

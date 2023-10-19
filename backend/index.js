@@ -1,30 +1,69 @@
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-const cors = require('cors');
-const socketIO = require('socket.io')(http, {
-    cors: {
-        origin: 'http://10.0.2.2:3000/'
-    }
-})
-
-const PORT = 4000;
+const http = require('http');
+const server = http.createServer(app);
+const {Server} = require('socket.io');
+const io = new Server(server);
+const port = process.env.PORT || 4000;
 
 let chatGroups = [];
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use(cors());
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
-socketIO.on('connection', (socket) => {
-    console.log(socket.id,"user is just connected");
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    socket.on('getAllGroups', () => {
+        socket.emit('groupList', chatGroups);
+    });
+
+    socket.on('create_group', (currentGroupName) => {
+        console.log("received group", currentGroupName)
+
+        chatGroups.unshift({
+            id: chatGroups.length + 1,
+            currentGroupName,
+            messages: [],
+        });
+
+        socket.emit('groupList', chatGroups);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
+server.listen(port, () => {
+    console.log('Server running at http://localhost:',port);
 })
 
-app.get('/api', (req,res) => {
-    console.log(req,res);
-    res.json(chatGroups);
-});
 
-http.listen(PORT, () => {
-    console.log('Server listening on',PORT);
-});
+// const express = require("express");
+// const { createServer } = require("http");
+// const { Server } = require("socket.io");
+
+// const app = express();
+// const httpServer = createServer(app);
+// const io = new Server(httpServer, { /* options */ });
+
+// const port = process.env.PORT || 4000;
+
+// io.on('connection', (socket) => {
+//     console.log('a user connected');
+
+//     socket.on('create_group', (data) => {
+//         console.log("received group", data)
+//         io.emit('received_message',data)
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('user disconnected');
+//     });
+// });
+
+// httpServer.listen(port, () => {
+//     console.log('Server running at http://localhost:',port);
+// })
