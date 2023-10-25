@@ -5,18 +5,22 @@ import { io } from "socket.io-client";
 
 // export const socket = io("http://localhost:4000");
 
-const SOCKET_URL = 'https://568b-2806-2f0-7421-fc90-d50-8912-3333-c148.ngrok-free.app';
+const SOCKET_URL = 'https://1d89-2806-2f0-7421-fc90-c8b2-3c42-7573-c70f.ngrok-free.app';
 
 class WSService {
     initializeSocket = async() => {
         try {
+
             this.socket = io(SOCKET_URL, {
                 transports:['websocket']
             })
-            console.log('Initializing socket',this.socket);
+
+            console.log('=== Initializing socket ===');
 
             this.socket.on('connect', (data) => {
-                console.log('=== socket connected ===');
+                console.log('=== socket connected ',this.socket.id,'===');
+
+                this.socket.emit('getAllGroups');
             })
 
             this.socket.on('disconnect', (data) => {
