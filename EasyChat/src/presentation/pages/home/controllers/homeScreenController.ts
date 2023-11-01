@@ -12,16 +12,7 @@ export default function HomeScreenController() {
     const socket:SocketType = getSocket();
 
     const [modalVisible, setModalVisible] = useState(false);
-
-    // useEffect(() => {
-    //     socketService.initializeSocket();
-
-    //     socketService.emit('getAllGroups');
-        
-    //     socketService.on('groupList', (groups: any) => {
-    //         console.log(groups);
-    //     })
-    // },[socketService]);
+    const [chats,setChats] = useState<ChatModel[]>([]);
 
     useEffect(() => {
         socket.emit('getAllGroups');
@@ -30,6 +21,7 @@ export default function HomeScreenController() {
 
     function allChats(chats:ChatModel[]) {
         console.log('✅✅✅ Screen: ',chats);
+        setChats(chats);
     }
 
     const sendGroup = () => {
