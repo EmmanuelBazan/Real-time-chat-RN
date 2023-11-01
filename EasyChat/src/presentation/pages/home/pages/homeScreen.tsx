@@ -47,6 +47,7 @@ const HomeScreen = () => {
                         <Spacer hspace={30} />
                         <TouchableOpacity onPress={() => {
                             sendGroup();
+                            setModalVisible(false);
                         }} >
                             <View style={styles.btnFill} >
                                 <Text style={styles.txtbtnW} >Agregar</Text>

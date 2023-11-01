@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { SocketType } from "../../../domain/types/socketType";
+import { SocketType } from "../domain/types/socketType";
 
 const SOCKET_URL = 'https://72c4-2806-2f0-7421-fc90-f174-419b-c7e3-e880.ngrok-free.app';
 

@@ -6,7 +6,24 @@ const {Server} = require('socket.io');
 const io = new Server(server);
 const port = process.env.PORT || 4000;
 
-let chatGroups = [];
+let chatGroups = [
+    {
+        id: 1,
+        name: 'grupo 1'
+    },
+    {
+        id: 2,
+        name: 'grupo 2'
+    },
+    {
+        id: 3,
+        name: 'grupo 3'
+    },
+    {
+        id: 4,
+        name: 'grupo 3'
+    },
+];
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -16,10 +33,11 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 
     socket.on('getAllGroups', () => {
-        socket.emit('groupList', chatGroups);
+        console.log('⚠️⚠️⚠️ Listen getAllGroups')
+        socket.emit('chatList', chatGroups);
     });
 
-    socket.on('create_group', (currentGroupName) => {
+    socket.on('createChat', (currentGroupName) => {
         console.log("received group", currentGroupName)
 
         chatGroups.unshift({
@@ -28,7 +46,7 @@ io.on('connection', (socket) => {
             messages: [],
         });
 
-        socket.emit('groupList', chatGroups);
+        socket.emit('chatList', chatGroups);
     });
 
     socket.on('disconnect', () => {
