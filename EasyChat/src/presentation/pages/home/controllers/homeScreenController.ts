@@ -13,25 +13,54 @@ export default function HomeScreenController() {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [chats,setChats] = useState<ChatModel[]>([]);
+    const [isChatName,setIsChatName] = useState(false);
+
+    const [inputs,setInputs] = useState({
+        chatName: ''
+    });
 
     useEffect(() => {
         socket.emit('getAllGroups');
         socket.on('chatList',allChats);
     },[socket])
 
-    function allChats(chats:ChatModel[]) {
-        console.log('✅✅✅ Screen: ',chats);
+    function handleOnchangeInput(value:string, inputName:string) {
+        setInputs(prevState => ({...prevState, [inputName]:value}));
+        switch (inputName) {
+            case 'chatName':
+                setIsChatName(true);
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    function validateInputs():boolean{
+        let chatNameOk:boolean = inputs.chatName.length > 0;
+
+        setIsChatName(chatNameOk);
+
+        return chatNameOk;
+    }
+
+    function allChats(chats:ChatModel[]):void{
         setChats(chats);
     }
 
     const sendGroup = () => {
-        socket.emit('createChat','nombre del chat');
+        socket.emit('createChat',inputs.chatName);
+        setInputs(prevState => ({...prevState, chatName:''}));
     }
 
     return {
         modalVisible,
         setModalVisible,
         sendGroup,
-        chats
+        chats,
+        handleOnchangeInput,
+        inputs,
+        isChatName,
+        validateInputs
     }
 }

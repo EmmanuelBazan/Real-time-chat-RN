@@ -13,7 +13,11 @@ const HomeScreen = () => {
         modalVisible,
         setModalVisible,
         sendGroup,
-        chats
+        chats,
+        handleOnchangeInput,
+        inputs,
+        isChatName,
+        validateInputs
     } = useController();
     
     return(
@@ -44,7 +48,11 @@ const HomeScreen = () => {
             <AddChatModal 
                 modalVisible={modalVisible} 
                 sendGroup={sendGroup} 
-                setModalVisible={setModalVisible} 
+                setModalVisible={setModalVisible}
+                chatNameValue={inputs.chatName}
+                isChatName={isChatName}
+                onChangeInput={handleOnchangeInput}
+                validateForm={validateInputs}
             />
 
         </View>
