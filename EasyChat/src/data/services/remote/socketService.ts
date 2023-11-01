@@ -15,47 +15,56 @@ interface ClientToServerEvents {
 
 type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-class WSService {
-    initializeSocket = async() => {
-        try {
-            const socket: SocketType = io(SOCKET_URL, {
-                transports:['websocket']
-            })
+export class WSService {
 
-            console.log('=== Initializing socket ===');
+    _socket?: SocketType
+
+    getSocket = async (): Promise<SocketType> => {
+        if(this._socket != undefined) return this._socket;
+
+        this._socket = io(SOCKET_URL, {
+            transports:['websocket']
+        })
+
+        this.initializeSocket(this._socket);
+
+        return this._socket;
+    }
+
+    private initializeSocket = async(socket: SocketType) => {
+
+        try {
+            console.log('⚠️⚠️ Initializing socket ⚠️⚠️');
 
             socket.on("connect", () => {
-                console.log('=== socket connected ',socket.id,'===');
+                console.log('✅✅✅ socket connected: ',socket.id);
 
                 socket.emit('getAllGroups');
             })
 
             socket.on('disconnect', (data) => {
-                console.log('=== socket disconnected ===');
+                console.log('⚠️⚠️⚠️ socket disconnected');
             })
 
             socket.on("connect_error", (data) => {
-                console.log('=== socket error ===',data);
+                console.log('❌❌❌ socket error: ',data);
             })
 
         } catch (error) {
             console.log('socket is not initialized',error);
         }
+
     }
 
-    emit(event: any, data = {}, socket: SocketType) {
+    async socketEmit(socket: SocketType, event: any) {
         socket.emit(event)
     }
 
-    on(event: any, listener: any, socket: SocketType) {
+    async socketOn(socket: SocketType, event: any, listener: any) {
         socket.on(event, listener)
     }
 
-    removeListener(listenerName: any, socket: SocketType) {
+    async removeListener(socket: SocketType, listenerName: any) {
         socket.removeListener(listenerName)
     }
 }
-
-const socketService = new WSService();
-
-export default socketService;
