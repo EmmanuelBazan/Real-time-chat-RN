@@ -1,16 +1,19 @@
 import React from "react";
-import { Alert, Modal, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, FlatList, Modal, Text, TextInput, TouchableOpacity, View } from "react-native"
+import {Card} from 'react-native-paper'
 import Spacer from "../../../widgets/spacer/spacer";
 import styles from "../styles/homeScreen_styles";
 import useController from '../controllers/homeScreenController';
 import AddChatModal from "../components/addChatModal";
+import CardChat from "../components/cardChat";
 
 const HomeScreen = () => {
 
     const {
         modalVisible,
         setModalVisible,
-        sendGroup
+        sendGroup,
+        chats
     } = useController();
     
     return(
@@ -23,6 +26,12 @@ const HomeScreen = () => {
             </View>
 
             <View style={styles.body} >
+            <FlatList
+                style={{marginBottom: 40}}
+                data={chats}
+                renderItem={({item}) => <CardChat chat={item} /> }
+                keyExtractor={(item,index) => index.toString()}
+            />
                 <View style={styles.btncontainer} >
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <View style={styles.btn} >

@@ -9,19 +9,23 @@ const port = process.env.PORT || 4000;
 let chatGroups = [
     {
         id: 1,
-        name: 'grupo 1'
+        name: 'grupo 1',
+        messages: [],
     },
     {
         id: 2,
-        name: 'grupo 2'
+        name: 'grupo 2',
+        messages: [],
     },
     {
         id: 3,
-        name: 'grupo 3'
+        name: 'grupo 3',
+        messages: [],
     },
     {
         id: 4,
-        name: 'grupo 3'
+        name: 'grupo 4',
+        messages: [],
     },
 ];
 
@@ -42,7 +46,7 @@ io.on('connection', (socket) => {
 
         chatGroups.unshift({
             id: chatGroups.length + 1,
-            currentGroupName,
+            name: currentGroupName,
             messages: [],
         });
 

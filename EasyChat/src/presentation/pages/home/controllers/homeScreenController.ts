@@ -32,5 +32,6 @@ export default function HomeScreenController() {
         modalVisible,
         setModalVisible,
         sendGroup,
+        chats
     }
 }
